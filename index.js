@@ -4,9 +4,8 @@ const exphbs = require('express-handlebars');
 
 const app = express();
 
-// (Express) Middleware function: it can handle post requests and use the json data 
+// These to handle POST
 app.use(express.json());
-// Same as above but if URL have some parameters, expresss can get those parameters from URL
 app.use(express.urlencoded({extended: false}));
 
 // Database from json file
@@ -31,7 +30,7 @@ app.get('/my-bucketlist', (req, res) => {
     });
 })
 
-//GET ALL API
+//GET ALL (API)
 app.get('/api/my-bucketlist', (req, res) => {
     res.json(bucketlist);
 })
@@ -57,7 +56,7 @@ app.get('/my-bucketlist/:id', (req, res) => {
     }
 });
 
-// GET ONE API
+// GET ONE ITEM (API)
 app.get('/api/my-bucketlist/:id', (req, res) => {
     const id = Number(req.params.id);
     const item = bucketlist.find(item => item.id === id);
@@ -75,7 +74,7 @@ app.get('/api/my-bucketlist/:id', (req, res) => {
 });
 
 
-// CREATE API
+// CREATE AN ITEM (API)
 app.post('/api/my-bucketlist' , (req, res) => {
 
     if(!req.body.destination || !req.body.country || !req.body.age) {
@@ -97,18 +96,14 @@ app.post('/api/my-bucketlist' , (req, res) => {
         bucketlist.push(newProduct);
 
         res.status(201).json(newProduct);
-        //res.json(products);
     }
     
 });
 
-// UPDATE
+// UPDATE AN ITEM (API)
 
 app.patch('/api/my-bucketlist/:id', (req,res) => {
     const idToUpdate = Number(req.params.id);
-    // const newDestination = req.body.destination;
-    // const newCountry = req.body.country;
-    // const newAge = req.body.age;
     const visitedUpdated = req.body.visited;
 
 
@@ -130,14 +125,12 @@ app.patch('/api/my-bucketlist/:id', (req,res) => {
 
 
 
-// DELETE
+// DELETE AN ITEM (API)
 
 app.delete('/api/my-bucketlist/:id', (req,res) => {
     const id = Number(req.params.id);
     const item = bucketlist.find(item => item.id === id);
 
-    // Jos ID löytyy, poistetaan kyseisen id:n product ja 
-    // palautetaan poistettu id
     if(item){
         bucketlist = bucketlist.filter(item => item.id != id);
         res.json(item);
@@ -153,15 +146,6 @@ app.delete('/api/my-bucketlist/:id', (req,res) => {
 
    
 });
-
-
-
-
-// List all the books 
-// List the data of one book 
-// Create a book (you can send the values using Postman) 
-// Update a book (you can send the values using Postman)
-// Delete a book 
 
 
 const PORT = process.env.PORT || 3000;
