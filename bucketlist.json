@@ -1,0 +1,45 @@
+[
+    {
+        "destination" : "Statue of Liberty",
+        "country" : "USA",
+        "age" : 137, 
+        "visited" : false
+    },
+    {
+        "destination" : "Angkor Wat",
+        "country" : "Cambodia",
+        "age" : 923, 
+        "visited" : true
+    },
+    {
+        "destination" : "Machu Picchu",
+        "country" : "Peru",
+        "age" : 603, 
+        "visited" : true
+    },
+    {
+        "destination" : "Eiffel Tower",
+        "country" : "France",
+        "age" : 134, 
+        "visited" : false
+    },
+    {
+        "destination" : "Great Pyramid of Giza",
+        "country" : "Egypt",
+        "age" : 4500, 
+        "visited" : false
+    },
+    {
+        "destination" : "Chicken Itza",
+        "country" : "Mexico",
+        "age" : 1500, 
+        "visited" : true
+    },
+    {
+        "destination" : "Colosseum",
+        "country" : "Italy",
+        "age" : 1951, 
+        "visited" : true
+    }
+    
+]

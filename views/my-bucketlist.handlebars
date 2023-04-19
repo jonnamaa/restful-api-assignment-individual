@@ -1,0 +1,31 @@
+
+<h1>{{pagetitle}}</h1>
+
+
+<div class="container">
+<div class="bucketlist">
+    {{#each bucketlist}}
+        <div class="card">
+            <h2>{{this.destination}} ({{this.country}})</h2>
+            
+            <p>Building's age: {{this.age}} years</p>
+
+            {{#if this.visited}}
+                <label class="box"><input type="checkbox" onclick="return false;"  checked="checked"/>Visited!
+                <span class="checkmark"></span>
+                </label>
+                
+            {{else}}
+                <label class="box"><input type="checkbox" onclick="return false;"/>Visited!
+                <span class="checkmark"></span>
+                </label>
+                
+            {{/if}}
+        </div>
+    {{/each}}
+    </div>
+</div>
+
+
+
+{{!-- class="checkbox-checked" --}}
