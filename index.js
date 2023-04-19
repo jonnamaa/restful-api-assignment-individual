@@ -4,9 +4,14 @@ const exphbs = require('express-handlebars');
 
 const app = express();
 
+// (Express) Middleware function: it can handle post requests and use the json data 
+app.use(express.json());
+// Same as above but if URL have some parameters, expresss can get those parameters from URL
+app.use(express.urlencoded({extended: false}));
+
 // Database from json file
 const jsonString = fs.readFileSync('./bucketlist.json', 'utf-8');
-const bucketlist = JSON.parse(jsonString);
+let bucketlist = JSON.parse(jsonString);
 
 
 app.engine('handlebars', exphbs.engine({
@@ -17,9 +22,8 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-// GET ALL
+// GET ALL to webpage
 app.get('/my-bucketlist', (req, res) => {
-    res.json(bucketlist);
     res.render('my-bucketlist',
     {
        pagetitle : "This is my bucketlist!",
@@ -27,13 +31,17 @@ app.get('/my-bucketlist', (req, res) => {
     });
 })
 
-// GET ONE
+//GET ALL API
+app.get('/api/my-bucketlist', (req, res) => {
+    res.json(bucketlist);
+})
+
+// GET ONE to webpage
 app.get('/my-bucketlist/:id', (req, res) => {
     const id = Number(req.params.id);
     const item = bucketlist.find(item => item.id === id);
 
     if(item){
-        res.json(item);
         res.render('my-bucketlist', 
         {
             pagetitle : "This is a bucketlist item!",
@@ -49,8 +57,26 @@ app.get('/my-bucketlist/:id', (req, res) => {
     }
 });
 
-// CREATE 
-app.post('/my-bucketlist' , (req, res) => {
+// GET ONE API
+app.get('/api/my-bucketlist/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const item = bucketlist.find(item => item.id === id);
+
+    if(item){
+        res.json(item);
+    }
+    else{
+        res.status(404).json(
+            {
+                msg: 'Not found'
+            }
+        )
+    }
+});
+
+
+// CREATE API
+app.post('/api/my-bucketlist' , (req, res) => {
 
     if(!req.body.destination || !req.body.country || !req.body.age) {
         res.status(400).json(
@@ -70,11 +96,6 @@ app.post('/my-bucketlist' , (req, res) => {
 
         bucketlist.push(newProduct);
 
-        // const url = `${req.protocol}://${req.get('host')}${req.originalUrl}/${newId}`;
-        // res.location(url);
-        // Or the one below works also
-        // res.location('/api/products/'+ newId);
-
         res.status(201).json(newProduct);
         //res.json(products);
     }
@@ -83,10 +104,35 @@ app.post('/my-bucketlist' , (req, res) => {
 
 // UPDATE
 
+app.patch('/api/my-bucketlist/:id', (req,res) => {
+    const idToUpdate = Number(req.params.id);
+    // const newDestination = req.body.destination;
+    // const newCountry = req.body.country;
+    // const newAge = req.body.age;
+    const visitedUpdated = req.body.visited;
+
+
+    const item = bucketlist.find(item => item.id === idToUpdate);
+    if(item) {
+        item.destination = item.destination;
+        item.country = item.country;
+        item.age = item.age;
+        item.visited = visitedUpdated;
+        res.status(200).json(item);
+    }
+    else {
+        res.status(404).json({
+            "msg" : "Resource not found"
+        })
+    }
+
+});
+
+
 
 // DELETE
 
-app.delete('/my-bucketlist/:id', (req,res) => {
+app.delete('/api/my-bucketlist/:id', (req,res) => {
     const id = Number(req.params.id);
     const item = bucketlist.find(item => item.id === id);
 
@@ -94,7 +140,7 @@ app.delete('/my-bucketlist/:id', (req,res) => {
     // palautetaan poistettu id
     if(item){
         bucketlist = bucketlist.filter(item => item.id != id);
-        res.json(`Deleted item by id: ${id}`);
+        res.json(item);
         
     }
     else{
