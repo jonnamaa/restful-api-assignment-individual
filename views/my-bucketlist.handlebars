@@ -2,8 +2,10 @@
 <h1>{{pagetitle}}</h1>
 
 
+
 <div class="container">
 <div class="bucketlist">
+    {{#if bucketlist}}    
     {{#each bucketlist}}
         <div class="card">
             <h2>{{this.destination}} ({{this.country}})</h2>
@@ -23,9 +25,26 @@
             {{/if}}
         </div>
     {{/each}}
+    {{/if}}
+    {{#if item}}
+        <div class="card">
+            <h2>{{item.destination}} ({{item.country}})</h2>
+            
+            <p>Building's age: {{item.age}} years</p>
+
+            {{#if item.visited}}
+                <label class="box"><input type="checkbox" onclick="return false;"  checked="checked"/>Visited!
+                <span class="checkmark"></span>
+                </label>
+                
+            {{else}}
+                <label class="box"><input type="checkbox" onclick="return false;"/>Visited!
+                <span class="checkmark"></span>
+                </label>
+                
+            {{/if}}
+        </div>
+    {{/if}}
     </div>
 </div>
 
-
-
-{{!-- class="checkbox-checked" --}}
